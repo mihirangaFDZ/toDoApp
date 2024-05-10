@@ -1,0 +1,101 @@
+CREATE TABLE IF NOT EXISTS event(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    owner INTEGER,
+    Name TEXT NOT NULL,
+    Description TEXT,
+    Category INTEGER NOT NULL,
+    TimeStart TEXT,
+    TimeEnd TEXT,
+    DateStart TEXT,
+    DateEnd TEXT,
+    Type INTEGER AS Boolean NOT NULL,
+    Checked INTEGER AS Boolean NOT NULL,
+    Color TEXT NOT NULL,
+    MainTaskID INTEGER
+);
+
+
+CREATE TABLE category(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+--Categorys:
+selectCategorys:
+SELECT * FROM category;
+
+insertCategory:
+INSERT INTO category(name) VALUES (?);
+
+deleteCategory{
+DELETE FROM category WHERE  id = ?;
+DELETE FROM event WHERE Category = ?;
+}
+
+
+
+--Tasks:
+selecFromtList:
+SELECT *
+FROM  event
+WHERE Category = ? AND Type = 1
+ORDER BY id;
+
+toggleState:
+UPDATE event
+SET Checked = ((Checked | 1) - (Checked & 1))
+WHERE id = ?;
+
+changeStateFalse:
+UPDATE event
+SET Checked = 0
+WHERE id = ?;
+
+changeStateTrueWhere:
+UPDATE event
+SET Checked = 1
+WHERE MainTaskID = ?;
+
+selById:
+SELECT * FROM event WHERE id = ?;
+
+
+--Events:
+selBetweenDate:
+SELECT * FROM event WHERE DateStart >= ? OR DateEnd >= ? ORDER BY DateStart,TimeStart;
+
+selMaxDateEnd:
+SELECT MAX(d.DateEnd) FROM (SELECT * FROM event WHERE DateStart >= ? OR DateEnd >= ? ORDER BY DateStart,TimeStart) d;
+
+addEvent:
+INSERT INTO event (owner,Name,Description,Category,TimeStart,TimeEnd,DateStart,DateEnd,Type,Checked,Color,MainTaskID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);
+
+updateEvent:
+UPDATE event
+    SET
+        Name = ?,
+        Description = ?,
+        Category = ?,
+        TimeStart = ?,
+        TimeEnd = ?,
+        DateStart = ?,
+        DateEnd = ?,
+        Type = ?,
+        Checked = ?,
+        Color = ?,
+        MainTaskID = ?
+    WHERE id = ?;
+
+deleteEvent{
+DELETE FROM event WHERE id = ?;
+DELETE FROM event WHERE MainTaskID = ?;
+}
+
+selMyID:
+SELECT max(id) FROM event;
+
+selEventByID:
+SELECT * FROM event WHERE MainTaskID = ?;
+
+selNameByID:
+SELECT Name FROM event WHERE MainTaskID = ?;

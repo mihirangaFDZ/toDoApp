@@ -1,0 +1,30 @@
+CREATE TABLE user (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    login TEXT NOT NULL,
+    eMail TEXT NOT NULL,
+    passwd TEXT NOT NULL,
+    sid INTEGER NOT NULL,
+    active INTEGER AS Boolean NOT NULL
+);
+
+insertUser:
+INSERT INTO user (login,eMail,passwd,sid,active) VALUES (?,?,?,?,0);
+
+checkUser:
+SELECT count(login) FROM user WHERE eMail = ? AND passwd = ?;
+
+getUsers:
+SELECT * FROM user;
+
+toggleActive:
+UPDATE user
+SET active = 1
+WHERE sid = ?;
+
+toggleFalse:
+UPDATE user
+SET active = 0
+WHERE sid = ?;
+
+selectActive:
+SELECT * FROM user WHERE active = 1;

@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    owner INTEGER,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL
+
+);
+
+insert:
+INSERT INTO notes(name,owner,description)
+VALUES (?,?,?);
+
+selectNotes:
+SELECT *
+FROM  notes;
+
+updateNote:
+UPDATE notes
+SET name = ?, description = ?
+WHERE id = ?;
+
+deleteNote:
+DELETE FROM notes WHERE id = ?;
